@@ -1,0 +1,17 @@
+﻿@model IEnumerable<OCodigoData.CustomerDTO>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome @Environment.OSVersion.Platform </h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="text-center">
+    @foreach (var customer in Model)
+    {
+        <h2 class="display-4"> @customer.CustomerID @customer.Name  </h2>
+    }
+</div>

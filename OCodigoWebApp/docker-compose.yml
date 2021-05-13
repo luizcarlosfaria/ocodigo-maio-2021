@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+  ocodigowebapp:
+    image: ${DOCKER_REGISTRY-}ocodigowebapp
+    build:
+      context: .
+      dockerfile: OCodigoWebApp/Dockerfile
+    environment: {
+        "ConnectionStrings__sgdb" : "Server=sql,1433;Database=dbocodigo;user id=ocodigo_user;password=ocodigo_password"        
+      }      
+    networks: 
+      - ocodigo_net      
+
+  sql:
+    image: luizcarlosfaria/mssql-server-linux:latest
+    environment: {
+      "ACCEPT_EULA" : "Y",
+      "MSSQL_PID" : "Express",
+      "SA_PASSWORD" : "8k3W2C2BVzAW9p",
+      "MSSQL_DATABASE" : "dbocodigo",
+      "MSSQL_DATABASE_COLLATE" : "SQL_Latin1_General_CP1_CI_AI",
+      "MSSQL_USER" : "ocodigo_user",
+      "MSSQL_PASSWORD" : "ocodigo_password",
+    }
+    volumes: 
+      - ./sql:/docker-entrypoint-initdb.d
+    ports: 
+      - 1433:1433 
+    networks: 
+      - ocodigo_net    
+
+
+networks: 
+  ocodigo_net:
+      driver: bridge
