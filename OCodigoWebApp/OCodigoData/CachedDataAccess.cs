@@ -26,7 +26,7 @@ namespace OCodigoData
             if (customers == null)
             {
                 customers = await GetCustomersInternal();
-                await this.redis.AddAsync(key, customers);
+                await this.redis.AddAsync(key, customers, TimeSpan.FromSeconds(30));
             }
             return customers;
         }
