@@ -30,6 +30,12 @@ services:
     networks: 
       - ocodigo_net    
 
+  redis:
+    image: redis:6.2.3
+    ports: 
+      - 6379:6379    
+    networks: 
+      - ocodigo_net        
 
 networks: 
   ocodigo_net:

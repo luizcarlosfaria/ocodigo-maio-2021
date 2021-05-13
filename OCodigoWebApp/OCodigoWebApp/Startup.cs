@@ -25,9 +25,17 @@ namespace OCodigoWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IDataAccess, CachedDataAccess>();
             services.AddScoped<DataAccess>();
             services.AddScoped<ConnectionWrapper>();
             services.AddTransient<IDbConnection>( it => new SqlConnection(this.Configuration.GetConnectionString("sgdb")));
+
+
+            var redisConfiguration = new StackExchange.Redis.Extensions.Core.Configuration.RedisConfiguration();
+            Configuration.Bind("Data:Redis", redisConfiguration);
+
+            services.AddStackExchangeRedisExtensions<StackExchange.Redis.Extensions.Newtonsoft.NewtonsoftSerializer>(redisConfiguration);
+
             services.AddControllersWithViews();
         }
 

@@ -7,14 +7,25 @@ using System.Threading.Tasks;
 
 namespace OCodigoData
 {
-    public class ConnectionWrapper: IDisposable
+    public class ConnectionWrapper : IDisposable
     {
         private bool _disposed;
 
         public ConnectionWrapper(IDbConnection dbConnection)
         {
             this.DbConnection = dbConnection;
-            dbConnection.Open();
+
+        }
+
+        public void Open()
+        {
+            this.DbConnection.Open();
+        }
+
+        public void Close()
+        {
+            this.DbConnection.Close();
+            this.DbConnection.Dispose();
         }
 
         public IDbConnection DbConnection { get; }
@@ -35,13 +46,11 @@ namespace OCodigoData
 
             if (disposing)
             {
-
-                this.DbConnection.Close();
-                this.DbConnection.Dispose();
+                this.Close();
             }
 
             _disposed = true;
         }
 
-}
+    }
 }

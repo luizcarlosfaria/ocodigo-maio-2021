@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace OCodigoData
 {
-    public class DataAccess
+    public class DataAccess : IDataAccess
     {
         private readonly ConnectionWrapper connectionWrapper;
 
@@ -13,9 +13,15 @@ namespace OCodigoData
             this.connectionWrapper = connectionWrapper;
         }
 
-        public IEnumerable<CustomerDTO> GetCustomers()
+        public async System.Threading.Tasks.Task<IEnumerable<CustomerDTO>> GetCustomersAsync()
         {
-            return connectionWrapper.DbConnection.Query<CustomerDTO>("SELECT CUSTOMERID, NAME FROM CUSTOMER");
+            connectionWrapper.Open();
+
+            var result = await connectionWrapper.DbConnection.QueryAsync<CustomerDTO>("SELECT CUSTOMERID, NAME FROM CUSTOMER");
+
+            connectionWrapper.Close();
+            
+            return result;
         }
     }
 }

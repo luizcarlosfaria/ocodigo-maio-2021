@@ -13,17 +13,17 @@ namespace OCodigoWebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly DataAccess dataAccess;
+        private readonly IDataAccess dataAccess;
 
-        public HomeController(ILogger<HomeController> logger, DataAccess dataAccess)
+        public HomeController(ILogger<HomeController> logger, IDataAccess dataAccess)
         {
             _logger = logger;
             this.dataAccess = dataAccess;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var customers = dataAccess.GetCustomers();
+            var customers = await dataAccess.GetCustomersAsync();
 
             return View(customers);
         }
