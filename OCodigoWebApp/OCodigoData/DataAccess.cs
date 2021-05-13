@@ -6,22 +6,16 @@ namespace OCodigoData
 {
     public class DataAccess : IDataAccess
     {
-        private readonly ConnectionWrapper connectionWrapper;
+        private readonly ConnectionManager connectionManager;
 
-        public DataAccess(ConnectionWrapper connectionWrapper)
+        public DataAccess(ConnectionManager connectionWrapper)
         {
-            this.connectionWrapper = connectionWrapper;
+            this.connectionManager = connectionWrapper;
         }
 
-        public async System.Threading.Tasks.Task<IEnumerable<CustomerDTO>> GetCustomersAsync()
+        public System.Threading.Tasks.Task<IEnumerable<CustomerDTO>> GetCustomersAsync()
         {
-            connectionWrapper.Open();
-
-            var result = await connectionWrapper.DbConnection.QueryAsync<CustomerDTO>("SELECT CUSTOMERID, NAME FROM CUSTOMER");
-
-            connectionWrapper.Close();
-            
-            return result;
+            return connectionManager.DbConnection.QueryAsync<CustomerDTO>("SELECT CUSTOMERID, NAME FROM CUSTOMER");
         }
     }
 }
