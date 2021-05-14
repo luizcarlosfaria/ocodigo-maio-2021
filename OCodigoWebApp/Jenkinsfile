@@ -43,6 +43,7 @@ pipeline {
                     docker push registry.oragon.io/demo/ocodigo_webapp:latest
                
                 '''
+                
 
                 withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'SERVER_ADMIN', \
                                              keyFileVariable: 'SERVER_ADMIN_KEY', \
