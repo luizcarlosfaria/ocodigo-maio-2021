@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  app:
+    image: registry.oragon.io/demo/ocodigo_webapp:latest
+    environment: {
+        "ConnectionStrings__sgdb" : "Server=sql,1433;Database=dbocodigo_prod;user id=ocodigo_user;password=ajhsiays978a6s98a7s97a"
+      }      
+    networks: 
+      - ocodigo_net
+      - lb
+
+
+  sql:
+    image: luizcarlosfaria/mssql-server-linux:latest
+    environment: {
+      "ACCEPT_EULA" : "Y",
+      "MSSQL_PID" : "Express",
+      "SA_PASSWORD" : "8k3W2C2BVzAW9p",
+      "MSSQL_DATABASE" : "dbocodigo_prod",
+      "MSSQL_DATABASE_COLLATE" : "SQL_Latin1_General_CP1_CI_AI",
+      "MSSQL_USER" : "ocodigo_user",
+      "MSSQL_PASSWORD" : "ajhsiays978a6s98a7s97a",
+    }
+    volumes: 
+      - ./sql:/docker-entrypoint-initdb.d
+    #ports: 
+    #  - 1433:1433 
+    networks: 
+      - ocodigo_net    
+
+  redis:
+    image: redis:6.2.3
+    #ports: 
+    #  - 6379:6379    
+    networks: 
+      - ocodigo_net        
+
+networks: 
+  ocodigo_net:
+    driver: bridge
+  lb:
+    external: true
