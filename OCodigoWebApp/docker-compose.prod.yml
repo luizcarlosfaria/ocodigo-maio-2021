@@ -22,10 +22,8 @@ services:
       "MSSQL_USER" : "ocodigo_user",
       "MSSQL_PASSWORD" : "ajhsiays978a6s98a7s97a",
     }
-    volumes: 
-      - ./sql:/docker-entrypoint-initdb.d
-    #ports: 
-    #  - 1433:1433 
+    ports: 
+      - 1444:1433 
     networks: 
       - ocodigo_net    
 
